@@ -27,14 +27,20 @@ class SidesController extends Controller
         ];
 
         if (Auth::attempt($infologin)) {
-            return redirect('admin');
-            exit();
+            if (Auth::user()->role == 'pembaca') {
+                return redirect('admin/pembaca');
+            } elseif (Auth::user()->role == 'penulis') {
+                return redirect('admin/penulis');
+            } elseif (Auth::user()->role == 'admin') {
+                return redirect('/admin');
+            }
         } else {
             return redirect('')->withErrors('Email or password is incorrect Kesalahan antara 2 itu')->withInput();
         }
     }
 
-    function logout () {
+    function logout()
+    {
         Auth::logout();
         return redirect('/');
     }
